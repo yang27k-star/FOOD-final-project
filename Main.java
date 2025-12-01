@@ -34,7 +34,7 @@ public class Main extends Application {
             keyFrames[i] = notes.get(i).getKeyFrame();
         }
         Pane pane = new Pane();
-        
+        //hi;
         for(int i = 0; i < 4; i++){
             Rectangle r = new Rectangle(35 + i * 100, 400, 50, 10);
 
