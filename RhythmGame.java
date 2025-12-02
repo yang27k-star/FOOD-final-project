@@ -19,8 +19,14 @@ public class RhythmGame extends Application {
     private Scene scene;
     private SceneManager sceneManager;
 
-    @Override
+
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     public void start(Stage primaryStage) {
+
         sceneManager = new SceneManager();
 
         // Start on the main menu screen
@@ -35,12 +41,6 @@ public class RhythmGame extends Application {
         primaryStage.setTitle("Screen Switching Example");
         primaryStage.setScene(scene);
         primaryStage.show();
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    public void start(Stage primaryStage) {
         
         //Randomly generating notes and storing them in the notes arraylist
         for(int i = 0; i < numberOfNotes; i++){
