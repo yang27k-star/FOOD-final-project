@@ -22,6 +22,11 @@ public class RhythmGame extends Application {
         launch(args);
     }
 
+    private void updateScore(Label score, int x){
+        int currentScore = Integer.parseInt(score.getText());
+        score.setText(String.valueOf(currentScore + x));
+    }
+
     private void showResponse(Label label, String text, Color color) {
         label.setText(text);
         label.setTextFill(color);
@@ -41,8 +46,7 @@ public class RhythmGame extends Application {
             keyFrames[i] = notes.get(i).getKeyFrame();
         }
         
-        
-        
+
         //Setting up stage
         Pane pane = new Pane();
 
@@ -52,6 +56,14 @@ public class RhythmGame extends Application {
         response.setLayoutY(20);
         pane.getChildren().add(response);
         
+        Label score = new Label(String.valueOf(0));
+        score.setFont(new Font(24));
+        score.setLayoutX(400);
+        score.setLayoutY(50);
+        score.setTextFill(Color.PURPLE);
+        pane.getChildren().add(score);
+
+       
         //List of rectangles representing the lanes/keys
         for(int i = 0; i < 4; i++){
             Rectangle r = new Rectangle(35 + i * 100, 400, 50, 10);
@@ -61,8 +73,6 @@ public class RhythmGame extends Application {
 
             pane.getChildren().addAll(r);
         }
-
-        
         
         for(Note note: notes){
             pane.getChildren().add(note.getRectangle());
@@ -102,8 +112,10 @@ public class RhythmGame extends Application {
             
             if(hit) {
                 showResponse(response, "Hit!", Color.LIMEGREEN);
+                updateScore(score, 30);
             } else {
                 showResponse(response, "Miss!", Color.RED);
+                updateScore(score, -10);
             }
             
         });
