@@ -10,24 +10,21 @@ public class SceneManager {
         this.scene = scene;
     }
 
-    // new screens
-    public Parent createMenuView() {
-        return new view.MenuView(this);
+    // create new screens
+    public Parent createMenu() {
+        return new view.MenuScreen(this);
     }
 
-    public Parent createGameView() {
-        return new view.GameView(this);
+    public Parent createGameScreen() {
+        return new view.GameScreen(this);
     }
 
-    // Public navigation methods:
-
-    public void showMenu() {
-        ensureSceneInitialized();
-        scene.setRoot(createMainMenuView());
+    // navigation methods
+    public void showMainMenu() {
+        scene.setRoot(createMenu());
     }
 
     public void showGame() {
-        ensureSceneInitialized();
-        scene.setRoot(createGameView());
+        scene.setRoot(createGameScreen());
     }
 }

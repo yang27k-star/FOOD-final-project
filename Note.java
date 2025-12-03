@@ -16,11 +16,20 @@ public class Note {
     private Rectangle r;
     private KeyFrame keyFrame;
     private static int duration = 20;
-
-    public Note(int xPos, int yPos) {
+    
+    private boolean isHoldNote;
+    private boolean isHolding; 
+    private double holdEndY;
+    
+    public Note(int xPos, int yPos, boolean isHold) {
         this.xPos = xPos;
         this.yPos = yPos;   
-        this.r = new Rectangle(20, 50, Color.color(Math.random(), Math.random(), Math.random()));
+        if(isHold){
+            this.r = new Rectangle(20, 100, Color.BLACK);
+        } else {
+            this.r = new Rectangle(20, 50, Color.color(Math.random(), Math.random(), Math.random()));
+        }
+        
         r.setX(xPos);
         r.setY(yPos);
         KeyValue keyValue = new KeyValue(r.translateYProperty(), duration * 400);
@@ -36,12 +45,23 @@ public class Note {
     }
 
     public boolean testPress (int keyIndex) {
-        
-        if(Math.abs(r.getX() - keyIndex) < 50 && Math.abs(r.getY() + r.getTranslateY() - 375) < 50){
+        if(!isHoldNote){
+            if(Math.abs(r.getX() - keyIndex) < 50 && Math.abs(r.getY() + r.getTranslateY() - 375) < 50){
             this.r.setVisible(false);
             return true;
         }
         return false;
+        }
+        
+
+        if (Math.abs(r.getX() - keyIndex) < 50 &&
+        Math.abs(r.getY() + r.getTranslateY() - 375) < 50) {
+
+        isHolding = true; // key is now down
+        return true;
+    }
+
+    return false;
     }
     
 }

@@ -16,6 +16,7 @@ import javafx.scene.text.Font;
 public class RhythmGame extends Application {
     private static int numberOfNotes = 100;
     private static ArrayList<Note> notes = new ArrayList<>();
+    private int misses = 0;
     private static KeyFrame[] keyFrames = new KeyFrame[numberOfNotes];
 
     public static void main(String[] args) {
@@ -36,11 +37,15 @@ public class RhythmGame extends Application {
         ft.play();
     }
 
+    private handlePress()[
+
+    ]
+
     public void start(Stage primaryStage) {
         
         //Randomly generating notes and storing them in the notes arraylist
         for(int i = 0; i < numberOfNotes; i++){
-            notes.add(new Note((50 + i * 100) % 400, 100 * (int)(numberOfNotes * (Math.random()  - 0.5))));
+            notes.add(new Note((50 + i * 100) % 400, 100 * (int)(numberOfNotes * (Math.random()  - 0.5)), true));
         }
         for(int i = 0; i < numberOfNotes; i++){
             keyFrames[i] = notes.get(i).getKeyFrame();
@@ -81,8 +86,8 @@ public class RhythmGame extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        
             scene.setOnKeyPressed(event -> {
-            
                 boolean hit = false;
             switch (event.getCode()) {
                 case A:
@@ -116,9 +121,23 @@ public class RhythmGame extends Application {
             } else {
                 showResponse(response, "Miss!", Color.RED);
                 updateScore(score, -10);
+                misses++;
             }
             
         });
+
+    scene.setOnKeyPressed(event -> {
+        for (Note note : notes) {
+        note.handlePress(event.getCode());
+        }
+    });
+
+    scene.setOnKeyReleased(event -> {
+        for (Note note : notes) {
+        note.handleRelease(event.getCode());
+        }
+    });
+        
         
 
         Timeline timeline = new Timeline(keyFrames);
