@@ -1,4 +1,4 @@
-import package.view;
+import view;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
