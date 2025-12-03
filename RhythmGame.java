@@ -19,6 +19,11 @@ public class RhythmGame extends Application {
     private int misses = 0;
     private static KeyFrame[] keyFrames = new KeyFrame[numberOfNotes];
 
+    private Scene scene;
+    private SceneManager sceneManager;
+
+
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -42,6 +47,21 @@ public class RhythmGame extends Application {
     ]
 
     public void start(Stage primaryStage) {
+
+        sceneManager = new SceneManager();
+
+        // Start on the main menu screen
+        var initialRoot = sceneManager.createMainMenuView();
+
+        // Create one Scene and reuse it
+        scene = new Scene(initialRoot, 800, 600);
+
+        // Give the Scene to the manager so it can swap roots later
+        sceneManager.setScene(scene);
+
+        primaryStage.setTitle("Screen Switching Example");
+        primaryStage.setScene(scene);
+        primaryStage.show();
         
         //Randomly generating notes and storing them in the notes arraylist
         for(int i = 0; i < numberOfNotes; i++){
