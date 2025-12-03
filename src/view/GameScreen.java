@@ -14,7 +14,7 @@ import javafx.scene.control.Label;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-import SceneManager; // adjust package as needed
+import src.SceneManager; // adjust package as needed
 
 public class GameScreen extends VBox {
     private Scene scene;

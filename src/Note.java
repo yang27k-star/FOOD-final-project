@@ -16,7 +16,7 @@ public class Note {
     private Rectangle r;
     private KeyFrame keyFrame;
     private static int duration = 20;
-    private static int holdduration = 1;
+    private static int holdduration = 30;
     private long holdStartNano;
     
     private boolean isHoldNote;
@@ -71,7 +71,7 @@ public class Note {
             return handleTap(keyIndex);
         }
 
-        //Start of hold note press
+        // HOLD NOTE START
         if (Math.abs(r.getX() - keyIndex) < 50 &&
             Math.abs(r.getY() + r.getTranslateY() - 375) < 60)
         {
@@ -81,24 +81,6 @@ public class Note {
         }
 
         return false;
-    }
-
-    public boolean handleRelease(int keyIndex) {
-        if (!isHoldNote) return false;
-
-        if (!isHolding) return false; // released but wasn't holding
-
-        isHolding = false;
-
-        double heldSeconds = (System.nanoTime() - holdStartNano) / 1_000_000_000.0;
-
-        if (heldSeconds >= holdduration) {
-            r.setVisible(false);
-            return true; // successful hold
-        } else {
-            r.setFill(Color.GRAY); // failed hold indicator
-            return false;
-        }
     }
     
 }

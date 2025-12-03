@@ -1,3 +1,4 @@
+import package.view;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
