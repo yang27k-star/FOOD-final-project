@@ -1,9 +1,9 @@
-package view;
+//package view;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-import src.SceneManager; 
+//import src.SceneManager; 
 
 public class MenuScreen extends VBox {
 

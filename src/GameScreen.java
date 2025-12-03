@@ -1,4 +1,4 @@
-package view;
+//package view;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -14,7 +14,7 @@ import javafx.scene.control.Label;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-import src.SceneManager; // adjust package as needed
+//import SceneManager; 
 
 public class GameScreen extends VBox {
     private Scene scene;

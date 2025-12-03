@@ -1,4 +1,4 @@
-import view;
+//import view;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
@@ -13,11 +13,11 @@ public class SceneManager {
 
     // create new screens
     public Parent createMenu() {
-        return new view.MenuScreen(this);
+        return new MenuScreen(this);
     }
 
     public Parent createGameScreen() {
-        return new view.GameScreen(this);
+        return new GameScreen(this);
     }
 
     // navigation methods

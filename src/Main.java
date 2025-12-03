@@ -29,6 +29,7 @@ public class Main extends Application {
     private SceneManager sceneManager;
 
     public static void main(String[] args) {
+        
         launch(args);
     }
 
@@ -37,7 +38,7 @@ public class Main extends Application {
         sceneManager = new SceneManager();
 
         // Start on the main menu screen
-        var initialRoot = sceneManager.createMenuView();
+        var initialRoot = sceneManager.createMenu();
 
         // Create one Scene and reuse it
         scene = new Scene(initialRoot, 800, 600);
@@ -45,71 +46,7 @@ public class Main extends Application {
         // Give the Scene to the manager so it can swap roots later
         sceneManager.setScene(scene);
 
-        primaryStage.setTitle("Screen Switching Example");
         primaryStage.setScene(scene);
         primaryStage.show();
-
-        //Randomly generating notes and storing them in the notes arraylist
-        for(int i = 0; i < numberOfNotes; i++){
-            notes.add(new Note((50 + i * 100) % 400, 100 * (int)(numberOfNotes * (Math.random()  - 0.5)), false));
-        }
-        for(int i = 0; i < numberOfNotes; i++){
-            keyFrames[i] = notes.get(i).getKeyFrame();
-        }
-        
-        //Setting up stage
-        Pane pane = new Pane();
-        
-        for(int i = 0; i < 4; i++){
-            Rectangle r = new Rectangle(35 + i * 100, 400, 50, 10);
-
-            r.setStroke(Color.TRANSPARENT);
-            r.setFill(Color.GREENYELLOW);
-
-            pane.getChildren().addAll(r);
-        }
-
-        
-        
-        for(Note note: notes){
-            pane.getChildren().add(note.getRectangle());
-        }
-        Scene scene = new Scene(pane, 450, 550);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
-            scene.setOnKeyPressed(event -> {
-
-            switch (event.getCode()) {
-                case A:
-                    for(Note note: notes){
-                        note.testPress(50);
-                    }
-                    break;
-                case S:
-                    for(Note note: notes){
-                        note.testPress(150);
-                    }
-                    break;
-                case D:
-                    for(Note note: notes){
-                        note.testPress(250);
-                    }
-                    break;
-                case F:
-                    for(Note note: notes){
-                        note.testPress(350);
-                    }
-                    break;
-                default:
-                    break;
-            }
-        
-        });
-        
-
-        Timeline timeline = new Timeline(keyFrames);
-        System.out.println("playing timeline");
-        timeline.play();
     }
 }

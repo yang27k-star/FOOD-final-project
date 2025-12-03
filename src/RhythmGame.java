@@ -42,31 +42,19 @@ public class RhythmGame extends Application {
         ft.play();
     }
 
-    private handlePress()[
-
-    ]
-
     public void start(Stage primaryStage) {
-
-        sceneManager = new SceneManager();
-
-        // Start on the main menu screen
-        var initialRoot = sceneManager.createMainMenuView();
-
-        // Create one Scene and reuse it
-        scene = new Scene(initialRoot, 800, 600);
-
-        // Give the Scene to the manager so it can swap roots later
-        sceneManager.setScene(scene);
-
-        primaryStage.setTitle("Screen Switching Example");
-        primaryStage.setScene(scene);
-        primaryStage.show();
         
         //Randomly generating notes and storing them in the notes arraylist
-        for(int i = 0; i < numberOfNotes; i++){
-            notes.add(new Note((50 + i * 100) % 400, 100 * (int)(numberOfNotes * (Math.random()  - 0.5)), true));
+        for(int i = 0; i < numberOfNotes - 5; i++){
+            notes.add(new Note((50 + i * 100) % 400, 100 * (int)(numberOfNotes * (Math.random()  - 0.5)), false));
+            
         }
+
+        for(int i = 0; i < 5; i++){
+            notes.add(new Note((50 + i * 100) % 400, 100 * (int)(numberOfNotes * (Math.random()  - 0.5)), true));
+            
+        }
+        
         for(int i = 0; i < numberOfNotes; i++){
             keyFrames[i] = notes.get(i).getKeyFrame();
         }
@@ -107,34 +95,12 @@ public class RhythmGame extends Application {
         primaryStage.show();
 
         
-            scene.setOnKeyPressed(event -> {
-                boolean hit = false;
-            switch (event.getCode()) {
-                case A:
-                    for(Note note: notes){
-                        hit |= note.testPress(50);
-                    }
-                    break;
-                case S:
-                    for(Note note: notes){
-                        hit |= note.testPress(150);
-                    }
-                    break;
-                case D:
-                    for(Note note: notes){
-                        hit |= note.testPress(250);
-                    }
-                    break;
-                case F:
-                    for(Note note: notes){
-                        hit |= note.testPress(350);
-                    }
-                    break;
-                default:
-                    break;
-            }
-            
-            
+        scene.setOnKeyPressed(event -> {
+            boolean hit = false; 
+                for(Note note: notes){
+                    hit |= note.handleTap(note.getLane(event.getCode()));
+                }
+
             if(hit) {
                 showResponse(response, "Hit!", Color.LIMEGREEN);
                 updateScore(score, 30);
@@ -153,9 +119,18 @@ public class RhythmGame extends Application {
     });
 
     scene.setOnKeyReleased(event -> {
+        boolean hit = false; 
         for (Note note : notes) {
-        note.handleRelease(event.getCode());
+        hit |= note.handleRelease(event.getCode());
         }
+        if(hit) {
+                showResponse(response, "Successful Hold!", Color.LIMEGREEN);
+                updateScore(score, 50);
+            } else {
+                showResponse(response, "Failed Hold!", Color.RED);
+                updateScore(score, -10);
+                misses++;
+            }
     });
         
         

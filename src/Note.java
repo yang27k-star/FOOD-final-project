@@ -37,7 +37,7 @@ public class Note {
         KeyValue keyValue = new KeyValue(r.translateYProperty(), duration * 400);
         keyFrame = new KeyFrame(Duration.seconds(duration), keyValue);
     }
-    
+
     public Rectangle getRectangle() {
         return r;
     }
@@ -65,15 +65,15 @@ public class Note {
     return false;
     }
 
-    public boolean handlePress(int keyIndex) {
+    public boolean handlePress(javafx.scene.input.KeyCode code) {
 
         if (!isHoldNote) {
-            return handleTap(keyIndex);
+            return handleTap(getLane(code));
         }
 
         //Start of hold note press
-        if (Math.abs(r.getX() - keyIndex) < 50 &&
-            Math.abs(r.getY() + r.getTranslateY() - 375) < 60)
+        if (Math.abs(r.getX() - getLane(code)) < 50 &&
+            Math.abs(r.getY() + r.getTranslateY() - 375) < 600)
         {
             isHolding = true;
             holdStartNano = System.nanoTime();
@@ -83,7 +83,21 @@ public class Note {
         return false;
     }
 
-    public boolean handleRelease(int keyIndex) {
+    public int getLane (javafx.scene.input.KeyCode code) {
+        switch(code) {
+            case A:
+                return 50;
+            case S:
+                return 150;
+            case D:
+                return 250;
+            case F:
+                return 350;
+            default:
+                return -1;
+        }
+    }
+    public boolean handleRelease(javafx.scene.input.KeyCode code) {
         if (!isHoldNote) return false;
 
         if (!isHolding) return false; // released but wasn't holding
