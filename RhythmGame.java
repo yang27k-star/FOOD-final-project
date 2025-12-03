@@ -1,3 +1,4 @@
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -10,6 +11,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.util.ArrayList;
 import javafx.scene.control.Label;
+import javafx.scene.text.Font;
 
 public class RhythmGame extends Application {
     private static int numberOfNotes = 100;
@@ -23,6 +25,15 @@ public class RhythmGame extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    private void showResponse(Label label, String text, Color color) {
+        label.setText(text);
+        label.setTextFill(color);
+        FadeTransition ft = new FadeTransition(Duration.seconds(0.4), label);
+        ft.setFromValue(1);
+        ft.setToValue(0);
+        ft.play();
     }
 
     public void start(Stage primaryStage) {
@@ -50,9 +61,18 @@ public class RhythmGame extends Application {
             keyFrames[i] = notes.get(i).getKeyFrame();
         }
         
+        
+        
         //Setting up stage
         Pane pane = new Pane();
+
+        Label response = new Label("");
+        response.setFont(new Font(24));
+        response.setLayoutX(180);
+        response.setLayoutY(20);
+        pane.getChildren().add(response);
         
+        //List of rectangles representing the lanes/keys
         for(int i = 0; i < 4; i++){
             Rectangle r = new Rectangle(35 + i * 100, 400, 50, 10);
 
@@ -72,32 +92,40 @@ public class RhythmGame extends Application {
         primaryStage.show();
 
             scene.setOnKeyPressed(event -> {
-
+            
+                boolean hit = false;
             switch (event.getCode()) {
                 case A:
                     for(Note note: notes){
-                        note.testPress(50);
+                        hit |= note.testPress(50);
                     }
                     break;
                 case S:
                     for(Note note: notes){
-                        note.testPress(150);
+                        hit |= note.testPress(150);
                     }
                     break;
                 case D:
                     for(Note note: notes){
-                        note.testPress(250);
+                        hit |= note.testPress(250);
                     }
                     break;
                 case F:
                     for(Note note: notes){
-                        note.testPress(350);
+                        hit |= note.testPress(350);
                     }
                     break;
                 default:
                     break;
             }
-        
+            
+            
+            if(hit) {
+                showResponse(response, "Hit!", Color.LIMEGREEN);
+            } else {
+                showResponse(response, "Miss!", Color.RED);
+            }
+            
         });
         
 

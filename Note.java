@@ -35,11 +35,13 @@ public class Note {
         return keyFrame;
     }
 
-    public void testPress (int keyIndex) {
+    public boolean testPress (int keyIndex) {
         
         if(Math.abs(r.getX() - keyIndex) < 50 && Math.abs(r.getY() + r.getTranslateY() - 375) < 50){
             this.r.setVisible(false);
+            return true;
         }
+        return false;
     }
     
 }
