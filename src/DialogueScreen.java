@@ -12,6 +12,7 @@ public class DialogueScreen extends VBox {
         setAlignment(Pos.CENTER);
 
         Button startButton = new Button("Wake up.");
+        
         //ActionEvent event;
         //if (startButton )
         //Button exitButton = new Button("Exit");

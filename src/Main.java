@@ -29,7 +29,7 @@ public class Main extends Application {
     private SceneManager sceneManager;
 
     public static void main(String[] args) {
-        
+        sceneManager.setScene();
         launch(args);
     }
 
