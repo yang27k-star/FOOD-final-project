@@ -9,15 +9,23 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.input.KeyCode;
+import java.util.HashSet;
+import java.util.Set;
+
+import java.security.Key;
 import java.util.ArrayList;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 
 public class RhythmGame extends Application {
     private static int numberOfNotes = 100;
+    private static int numberOfHoldNotes = 10;
     private static ArrayList<Note> notes = new ArrayList<>();
+    private static ArrayList<Note> holdNotes = new ArrayList<>();
+    private static Set<KeyCode> keysHeld = new HashSet<>();
     private int misses = 0;
-    private static KeyFrame[] keyFrames = new KeyFrame[numberOfNotes];
+    private static KeyFrame[] keyFrames = new KeyFrame[numberOfNotes + numberOfHoldNotes];
 
     private Scene scene;
     private SceneManager sceneManager;
@@ -45,18 +53,23 @@ public class RhythmGame extends Application {
     public void start(Stage primaryStage) {
         
         //Randomly generating notes and storing them in the notes arraylist
-        for(int i = 0; i < numberOfNotes - 5; i++){
-            notes.add(new Note((50 + i * 100) % 400, 100 * (int)(numberOfNotes * (Math.random()  - 0.5)), false));
+        
+        for(int i = 0; i < numberOfNotes; i++){
+            notes.add(new Note((50 + i * 100) % 400, -200 - 100 * (int)(numberOfNotes * Math.random()), false));
             
         }
 
-        for(int i = 0; i < 5; i++){
-            notes.add(new Note((50 + i * 100) % 400, 100 * (int)(numberOfNotes * (Math.random()  - 0.5)), true));
+        for(int i = 0; i < numberOfHoldNotes; i++){
+            holdNotes.add(new Note(450, -200 - 600 * (int)(numberOfHoldNotes * Math.random()), true));
             
         }
         
         for(int i = 0; i < numberOfNotes; i++){
             keyFrames[i] = notes.get(i).getKeyFrame();
+        }
+
+        for(int i = numberOfNotes; i < numberOfNotes + numberOfHoldNotes; i++){
+            keyFrames[i] = holdNotes.get(i - numberOfNotes).getKeyFrame();
         }
         
 
@@ -78,7 +91,7 @@ public class RhythmGame extends Application {
 
        
         //List of rectangles representing the lanes/keys
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < 5; i++){
             Rectangle r = new Rectangle(35 + i * 100, 400, 50, 10);
 
             r.setStroke(Color.TRANSPARENT);
@@ -90,48 +103,65 @@ public class RhythmGame extends Application {
         for(Note note: notes){
             pane.getChildren().add(note.getRectangle());
         }
-        Scene scene = new Scene(pane, 450, 550);
+        for(Note note: holdNotes){
+            pane.getChildren().add(note.getRectangle());
+        }
+
+        Scene scene = new Scene(pane, 550, 550);
         primaryStage.setScene(scene);
         primaryStage.show();
 
         
+        
         scene.setOnKeyPressed(event -> {
-            boolean hit = false; 
-                for(Note note: notes){
-                    hit |= note.handleTap(note.getLane(event.getCode()));
-                }
+            boolean tapHit = false;
+            for (Note note : notes) {
+                int lane = note.getLane(event.getCode());
+                tapHit |= note.handleTap(lane);      
+            }
+            if (!keysHeld.contains(event.getCode())) {
+            keysHeld.add(event.getCode());  // mark the key as held
+            for (Note hold : holdNotes) {
+                boolean holdHit = false;
+                holdHit |= hold.handlePress(event.getCode());
+            }
+        }
 
-            if(hit) {
+            if (tapHit) {
                 showResponse(response, "Hit!", Color.LIMEGREEN);
                 updateScore(score, 30);
             } else {
+                if(!event.getCode().toString().equals("SPACE")){
                 showResponse(response, "Miss!", Color.RED);
                 updateScore(score, -10);
                 misses++;
+                }
             }
-            
-        });
-
-    scene.setOnKeyPressed(event -> {
-        for (Note note : notes) {
-        note.handlePress(event.getCode());
-        }
-    });
+     });
 
     scene.setOnKeyReleased(event -> {
-        boolean hit = false; 
-        for (Note note : notes) {
-        hit |= note.handleRelease(event.getCode());
+        keysHeld.remove(event.getCode());
+
+        //only handles releases for hold notes
+        if(event.getCode().toString().equals("SPACE")){
+        boolean atLeastOne = false;
+        for(Note holdNote : holdNotes){
+            atLeastOne |= holdNote.handleRelease();
         }
-        if(hit) {
-                showResponse(response, "Successful Hold!", Color.LIMEGREEN);
-                updateScore(score, 50);
-            } else {
-                showResponse(response, "Failed Hold!", Color.RED);
-                updateScore(score, -10);
-                misses++;
-            }
+
+        if (atLeastOne == true) {
+            showResponse(response, "Hold success!", Color.GOLD);
+            updateScore(score, 100);  // bonus points for hold
+        } else {
+            showResponse(response, "Hold miss!", Color.RED);
+            updateScore(score, -30);
+            misses++;
+        }
+    
+        }
+        
     });
+
         
         
 

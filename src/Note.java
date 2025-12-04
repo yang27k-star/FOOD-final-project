@@ -16,25 +16,30 @@ public class Note {
     private Rectangle r;
     private KeyFrame keyFrame;
     private static int duration = 20;
-    private static int holdduration = 1;
-    private long holdStartNano;
+    private static int threshhold = 50;
     
     private boolean isHoldNote;
-    private boolean isHolding; 
-    private double holdEndY;
+    private boolean isHolding = false;
+    private boolean wasHolding = false;
+    private int holdNoteHeight = 200;
+    private double requiredDistance = 200;
+    private double pressedYPosition = 0;
+    
     
     public Note(int xPos, int yPos, boolean isHold) {
         this.xPos = xPos;
         this.yPos = yPos;   
+        this.isHoldNote = isHold;
         if(isHold){
-            this.r = new Rectangle(20, 100, Color.BLACK);
+            this.r = new Rectangle(20, holdNoteHeight, Color.BLACK);
         } else {
             this.r = new Rectangle(20, 50, Color.color(Math.random(), Math.random(), Math.random()));
         }
         
         r.setX(xPos);
         r.setY(yPos);
-        KeyValue keyValue = new KeyValue(r.translateYProperty(), duration * 400);
+        KeyValue keyValue = new KeyValue(r.translateYProperty(), duration * 300);
+        KeyValue holdKeyValue = new KeyValue(r.translateYProperty(), duration * 300);
         keyFrame = new KeyFrame(Duration.seconds(duration), keyValue);
     }
 
@@ -42,6 +47,13 @@ public class Note {
         return r;
     }
 
+    public boolean isHoldNote() {
+        return isHoldNote;
+    }
+
+    public boolean wasHolding() {
+        return wasHolding;
+    }
     public KeyFrame getKeyFrame() {
         return keyFrame;
     }
@@ -52,32 +64,22 @@ public class Note {
             this.r.setVisible(false);
             return true;
         }
-        return false;
-        }
-        
-
-        if (Math.abs(r.getX() - keyIndex) < 50 &&
-        Math.abs(r.getY() + r.getTranslateY() - 375) < 50) {
-
-        isHolding = true; // key is now down
-        return true;
     }
     return false;
     }
 
     public boolean handlePress(javafx.scene.input.KeyCode code) {
-
-        if (!isHoldNote) {
-            return handleTap(getLane(code));
-        }
-
+        isHolding = false;
+        wasHolding = false;
+        pressedYPosition = r.getY() + r.getTranslateY() + holdNoteHeight;
         //Start of hold note press
         if (Math.abs(r.getX() - getLane(code)) < 50 &&
-            Math.abs(r.getY() + r.getTranslateY() - 375) < 600)
+            Math.abs(pressedYPosition - 375) < 60)
         {
+            r.setFill(Color.DARKGRAY);
             isHolding = true;
-            holdStartNano = System.nanoTime();
-            return true;
+            wasHolding = true;
+            return true; //start holding
         }
 
         return false;
@@ -90,29 +92,32 @@ public class Note {
             case S:
                 return 150;
             case D:
-                return 250;
+                return 250; 
             case F:
                 return 350;
+            case SPACE:
+                return 450; //Hold notes
             default:
                 return -1;
         }
     }
-    public boolean handleRelease(javafx.scene.input.KeyCode code) {
-        if (!isHoldNote) return false;
+    public boolean handleRelease() {
+        if(wasHolding){
+            wasHolding = false;
+        double moved = r.getY() + r.getTranslateY() + holdNoteHeight - pressedYPosition;
+        System.out.println(moved);
 
-        if (!isHolding) return false; // released but wasn't holding
+        if (Math.abs(moved - requiredDistance) < threshhold) {
+        r.setVisible(false);
 
-        isHolding = false;
+        // Reset to prevent infinite "Hold success"
+        wasHolding = false;
 
-        double heldSeconds = (System.nanoTime() - holdStartNano) / 1_000_000_000.0;
-
-        if (heldSeconds >= holdduration) {
-            r.setVisible(false);
-            return true; // successful hold
-        } else {
-            r.setFill(Color.GRAY); // failed hold indicator
-            return false;
+        return true;
         }
+        
+    }
+    return false;
     }
     
 }
