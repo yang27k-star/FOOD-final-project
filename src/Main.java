@@ -29,7 +29,6 @@ public class Main extends Application {
     private SceneManager sceneManager;
 
     public static void main(String[] args) {
-        sceneManager.setScene();
         launch(args);
     }
 
@@ -43,10 +42,14 @@ public class Main extends Application {
         // Create one Scene and reuse it
         scene = new Scene(initialRoot, 800, 600);
 
+        GameScreen rhythmGame = new GameScreen(sceneManager);
+
         // Give the Scene to the manager so it can swap roots later
         sceneManager.setScene(scene);
 
         primaryStage.setScene(scene);
         primaryStage.show();
+        primaryStage.showGame();
+
     }
 }
