@@ -95,7 +95,7 @@ public class Note {
                 return 250; 
             case F:
                 return 350;
-            case SPACE:
+            case H:
                 return 450; //Hold notes
             default:
                 return -1;
@@ -109,7 +109,7 @@ public class Note {
 
         if (Math.abs(moved - holdNoteHeight) < threshhold) {
         r.setVisible(false);
-
+        
         // Reset to prevent infinite "Hold success"
         wasHolding = false;
 

@@ -17,23 +17,21 @@ import javafx.scene.layout.VBox;
 //import SceneManager; 
 
 public class GameScreen extends VBox {
-    private Scene scene;
-    private SceneManager sceneManager;
 
     public GameScreen(SceneManager sceneManager) {
         // Basic layout setup
         setSpacing(10);
         setAlignment(Pos.CENTER);
 
-        // Create UI controls
+        // Let the user choose to start instead of jumping in
         Button startButton = new Button("Start Game");
-        Button exitButton = new Button("Exit");
+        //Button exitButton = new Button("Exit");
 
         // Hook up behavior
-        startButton.setOnAction(e -> sceneManager.showGame());
-        exitButton.setOnAction(e -> System.exit(0));
+        startButton.setOnAction(e -> sceneManager.showRhythmGame());
+        //exitButton.setOnAction(e -> System.exit(0));
 
         // Add controls to this layout
-        getChildren().addAll(startButton, exitButton);
+        getChildren().addAll(startButton/*, exitButton*/);
     }
 }

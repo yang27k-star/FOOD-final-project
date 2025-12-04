@@ -12,20 +12,30 @@ public class SceneManager {
     }
 
     // create new screens
-    public Parent createMenu() {
-        return new MenuScreen(this);
-    }
 
     public Parent createGameScreen() {
         return new GameScreen(this);
     }
 
-    // navigation methods
-    public void showMainMenu() {
-        scene.setRoot(createMenu());
+    public Parent createRhythmGameScreen() {
+        return new RhythmGame(this);
     }
 
-    public void showGame() {
+    public void showRhythmGame() {
+        scene.setRoot(createRhythmGameScreen());
+    }
+
+    public Parent createDialogueScreen() {
+        return new DialogueScreen(this);
+    }
+
+    public void showDialogueScreen() {
+        scene.setRoot(createDialogueScreen());
+    }
+
+    // navigation methods
+
+    public void showGameScreen() {
         scene.setRoot(createGameScreen());
     }
 }

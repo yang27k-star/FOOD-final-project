@@ -21,10 +21,6 @@ import javafx.scene.control.Label;
 
 
 public class Main extends Application {
-
-    private static int numberOfNotes = 100;
-    private static ArrayList<Note> notes = new ArrayList<>();
-    private static KeyFrame[] keyFrames = new KeyFrame[numberOfNotes];
     private Scene scene;
     private SceneManager sceneManager;
 
@@ -37,19 +33,20 @@ public class Main extends Application {
         sceneManager = new SceneManager();
 
         // Start on the main menu screen
-        var initialRoot = sceneManager.createMenu();
+        var initialRoot = sceneManager.createGameScreen();
+        //var initialRoot = sceneManager.createDialogueScreen();
 
         // Create one Scene and reuse it
         scene = new Scene(initialRoot, 800, 600);
 
-        GameScreen rhythmGame = new GameScreen(sceneManager);
+        //GameScreen rhythmGame = new GameScreen(sceneManager);
 
         // Give the Scene to the manager so it can swap roots later
         sceneManager.setScene(scene);
 
         primaryStage.setScene(scene);
         primaryStage.show();
-        primaryStage.showGame();
+        // sceneManager.showRhythmGame();
 
     }
 }

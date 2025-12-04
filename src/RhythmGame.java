@@ -12,13 +12,16 @@ import javafx.util.Duration;
 import javafx.scene.input.KeyCode;
 import java.util.HashSet;
 import java.util.Set;
-
+import javafx.scene.control.Label;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+//import javafx.scene.layout.VBox;
 import java.security.Key;
 import java.util.ArrayList;
-import javafx.scene.control.Label;
 import javafx.scene.text.Font;
+import javafx.application.Platform;
 
-public class RhythmGame extends Application {
+public class RhythmGame extends Pane {
     private static int numberOfNotes = 100;
     private static int numberOfHoldNotes = 10;
     private static ArrayList<Note> notes = new ArrayList<>();
@@ -27,14 +30,7 @@ public class RhythmGame extends Application {
     private int misses = 0;
     private static KeyFrame[] keyFrames = new KeyFrame[numberOfNotes + numberOfHoldNotes];
 
-    private Scene scene;
-    private SceneManager sceneManager;
 
-
-
-    public static void main(String[] args) {
-        launch(args);
-    }
 
     private void updateScore(Label score, int x){
         int currentScore = Integer.parseInt(score.getText());
@@ -50,10 +46,29 @@ public class RhythmGame extends Application {
         ft.play();
     }
 
-    public void start(Stage primaryStage) {
+    public RhythmGame(SceneManager sceneManager) {
+        
+        
+        System.out.println("Starting");
+        //Setting up stage
+        
+        // Pane pane = new Pane();
+
+        Label response = new Label("");
+        response.setFont(new Font(24));
+        response.setLayoutX(180);
+        response.setLayoutY(20);
+        getChildren().add(response);
+        
+        Label score = new Label(String.valueOf(0));
+        score.setFont(new Font(24));
+        score.setLayoutX(400);
+        score.setLayoutY(50);
+        score.setTextFill(Color.PURPLE);
+        getChildren().add(score);
         
         //Randomly generating notes and storing them in the notes arraylist
-        
+
         for(int i = 0; i < numberOfNotes; i++){
             notes.add(new Note((50 + i * 100) % 400, -200 - 100 * (int)(numberOfNotes * Math.random()), false));
             
@@ -71,23 +86,6 @@ public class RhythmGame extends Application {
         for(int i = numberOfNotes; i < numberOfNotes + numberOfHoldNotes; i++){
             keyFrames[i] = holdNotes.get(i - numberOfNotes).getKeyFrame();
         }
-        
-
-        //Setting up stage
-        Pane pane = new Pane();
-
-        Label response = new Label("");
-        response.setFont(new Font(24));
-        response.setLayoutX(180);
-        response.setLayoutY(20);
-        pane.getChildren().add(response);
-        
-        Label score = new Label(String.valueOf(0));
-        score.setFont(new Font(24));
-        score.setLayoutX(400);
-        score.setLayoutY(50);
-        score.setTextFill(Color.PURPLE);
-        pane.getChildren().add(score);
 
        
         //List of rectangles representing the lanes/keys
@@ -97,23 +95,19 @@ public class RhythmGame extends Application {
             r.setStroke(Color.TRANSPARENT);
             r.setFill(Color.GREENYELLOW);
 
-            pane.getChildren().addAll(r);
+            getChildren().addAll(r);
         }
         
         for(Note note: notes){
-            pane.getChildren().add(note.getRectangle());
+            getChildren().add(note.getRectangle());
         }
         for(Note note: holdNotes){
-            pane.getChildren().add(note.getRectangle());
+            getChildren().add(note.getRectangle());
         }
-
-        Scene scene = new Scene(pane, 550, 550);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
         
         
-        scene.setOnKeyPressed(event -> {
+        setOnKeyPressed(event -> {
+            System.out.println(event.getCode());
             boolean tapHit = false;
             for (Note note : notes) {
                 int lane = note.getLane(event.getCode());
@@ -131,19 +125,19 @@ public class RhythmGame extends Application {
                 showResponse(response, "Hit!", Color.LIMEGREEN);
                 updateScore(score, 30);
             } else {
-                if(!event.getCode().toString().equals("SPACE")){ //space is for hold notes only
+                if(!event.getCode().toString().equals("H")){ //space is for hold notes only
                 showResponse(response, "Miss!", Color.RED);
                 updateScore(score, -10);
                 misses++;
                 }
             }
-     });
+        });
 
-    scene.setOnKeyReleased(event -> {
+        setOnKeyReleased(event -> {
         keysHeld.remove(event.getCode());
 
-        //only handles releases for hold notes
-        if(event.getCode().toString().equals("SPACE")){
+        //only handles releases for hold notes 
+        if(event.getCode().toString().equals("H")){
         boolean atLeastOne = false;
         for(Note holdNote : holdNotes){
             atLeastOne |= holdNote.handleRelease();
@@ -160,13 +154,12 @@ public class RhythmGame extends Application {
     
         }
         
-    });
-
-        
-        
+        });
 
         Timeline timeline = new Timeline(keyFrames);
-        System.out.println("playing timeline");
         timeline.play();
+        setFocusTraversable(true);
+        // requestFocus();
+        Platform.runLater(() -> requestFocus() );
     }
 }
