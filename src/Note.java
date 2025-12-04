@@ -16,7 +16,7 @@ public class Note {
     private Rectangle r;
     private KeyFrame keyFrame;
     private static int duration = 20;
-    private static int threshhold = 50;
+    private static int threshhold = 20;
     
     private boolean isHoldNote;
     private boolean isHolding = false;
@@ -107,7 +107,7 @@ public class Note {
         double moved = r.getY() + r.getTranslateY() + holdNoteHeight - pressedYPosition;
         System.out.println(moved);
 
-        if (Math.abs(moved - requiredDistance) < threshhold) {
+        if (Math.abs(moved - holdNoteHeight) < threshhold) {
         r.setVisible(false);
 
         // Reset to prevent infinite "Hold success"

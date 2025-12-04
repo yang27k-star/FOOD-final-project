@@ -131,7 +131,7 @@ public class RhythmGame extends Application {
                 showResponse(response, "Hit!", Color.LIMEGREEN);
                 updateScore(score, 30);
             } else {
-                if(!event.getCode().toString().equals("SPACE")){
+                if(!event.getCode().toString().equals("SPACE")){ //space is for hold notes only
                 showResponse(response, "Miss!", Color.RED);
                 updateScore(score, -10);
                 misses++;
