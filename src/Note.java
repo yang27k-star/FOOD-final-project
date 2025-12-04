@@ -16,25 +16,27 @@ public class Note {
     private Rectangle r;
     private KeyFrame keyFrame;
     private static int duration = 20;
-    private static int holdduration = 1;
-    private long holdStartNano;
     
     private boolean isHoldNote;
     private boolean isHolding; 
-    private double holdEndY;
+    private int holdNoteHeight = 200;
+    private double holdEndY = 375;
+    private boolean wasHolding;
     
     public Note(int xPos, int yPos, boolean isHold) {
         this.xPos = xPos;
         this.yPos = yPos;   
+        this.isHoldNote = isHold;
         if(isHold){
-            this.r = new Rectangle(20, 100, Color.BLACK);
+            this.r = new Rectangle(20, holdNoteHeight, Color.BLACK);
         } else {
             this.r = new Rectangle(20, 50, Color.color(Math.random(), Math.random(), Math.random()));
         }
         
         r.setX(xPos);
         r.setY(yPos);
-        KeyValue keyValue = new KeyValue(r.translateYProperty(), duration * 400);
+        KeyValue keyValue = new KeyValue(r.translateYProperty(), duration * 200);
+        KeyValue holdKeyValue = new KeyValue(r.translateYProperty(), duration * 200 + 250);
         keyFrame = new KeyFrame(Duration.seconds(duration), keyValue);
     }
 
@@ -42,6 +44,13 @@ public class Note {
         return r;
     }
 
+    public boolean isHoldNote() {
+        return isHoldNote;
+    }
+
+    public boolean wasHolding() {
+        return wasHolding;
+    }
     public KeyFrame getKeyFrame() {
         return keyFrame;
     }
@@ -66,18 +75,17 @@ public class Note {
     }
 
     public boolean handlePress(javafx.scene.input.KeyCode code) {
-
-        if (!isHoldNote) {
-            return handleTap(getLane(code));
-        }
-
+        isHolding = false;
+        wasHolding = false;
+        double yPosition = r.getY() + r.getTranslateY() + holdNoteHeight;
         //Start of hold note press
         if (Math.abs(r.getX() - getLane(code)) < 50 &&
-            Math.abs(r.getY() + r.getTranslateY() - 375) < 600)
+            Math.abs(yPosition - 375) < 60)
         {
+            System.out.println("Started holding note");
             isHolding = true;
-            holdStartNano = System.nanoTime();
-            return true;
+            wasHolding = true;
+            return true; //start holding
         }
 
         return false;
@@ -93,26 +101,27 @@ public class Note {
                 return 250;
             case F:
                 return 350;
+            case G:
+                return 450; //Hold notes
             default:
                 return -1;
         }
     }
     public boolean handleRelease(javafx.scene.input.KeyCode code) {
         if (!isHoldNote) return false;
-
-        if (!isHolding) return false; // released but wasn't holding
+        if (!wasHolding) return false; 
 
         isHolding = false;
 
-        double heldSeconds = (System.nanoTime() - holdStartNano) / 1_000_000_000.0;
+        double yPosition = r.getY() + r.getTranslateY();
 
-        if (heldSeconds >= holdduration) {
-            r.setVisible(false);
-            return true; // successful hold
-        } else {
-            r.setFill(Color.GRAY); // failed hold indicator
-            return false;
+        // Only judge when the note actually reached the end
+        if (yPosition >= holdEndY) {
+          r.setVisible(false);
+          return true;   // successful hold
         }
-    }
+
+        return false;
+        }
     
 }
