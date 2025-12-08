@@ -20,35 +20,39 @@ public class DialogueScreen extends VBox {
         Label narration = new Label("You see flowers everywhere, \nstretching past welcoming mountains and lovely valley alike.");
         narration.setFont(new Font("Arial", 18));
         Button startButton = new Button("Wake up.");
-        getChildren().addAll(startButton, narration);
+        getChildren().addAll(narration,startButton);
         startButton.setOnAction(e -> {
             getChildren().remove(startButton);
             narration.setText("Oh... That was a dream. You find yourself in your same old bed, the same, smelly clothes, \nand the same 12-cent-per-day closet you sleep in.");
             Button continueButton = new Button("Continue");
             getChildren().add(continueButton);
             continueButton.setOnAction(ee -> {
-                getChildren().removeAll(continueButton,narration);
-                narration.setText("Searching for your usual donation at the mall entrance, \nyou suddenly notice a decrepit upright piano hidden conspicuously near you. \nSuddenly, memories of your past appear: your grandmother \nused to sit you on her lap and have you play 'Hot Cross Buns'");
-                Button playPiano = new Button("Play the piano");
-                Button leavePiano = new Button("Walk away");
-                getChildren().addAll(narration, leavePiano,playPiano);
-                playPiano.setOnAction(eee -> {
-                    getChildren().remove(narration);
-                    narration.setText("What is this feeling... You feel... INSPIRED");
-                    getChildren().add(narration);
-                    getChildren().removeAll(playPiano,leavePiano);
-                    getChildren().add(continueButton);
-                    continueButton.setOnAction(eeee -> {
-                        getChildren().removeAll(continueButton,narration);
-                        sceneManager.createRhythmGameScreen();
-                        sceneManager.showRhythmGame();
-                        narration.setText("Woah! You surprised even yourself. Your performance drew heads, and, soon, a small pile of coins appears.");
+                //getChildren().removeAll(continueButton);
+                narration.setText("Searching for your usual donation at the mall entrance, \nyou notice a decrepit upright piano hidden conspicuously near you.");
+                continueButton.setOnAction(eee -> {
+                    getChildren().remove(continueButton);
+                    narration.setText("Suddenly, memories of your past appear: your grandmother \nused to sit you on her lap and have you play 'Hot Cross Buns'");
+                    Button playPiano = new Button("Play the piano");
+                    Button leavePiano = new Button("Walk away");
+                    getChildren().addAll(leavePiano,playPiano);
+                    playPiano.setOnAction(eeee -> {
+                        //getChildren().remove(narration);
+                        narration.setText("What is this feeling... You feel... INSPIRED");
+                        //getChildren().add(narration);
+                        getChildren().removeAll(playPiano,leavePiano);
+                        getChildren().add(continueButton);
+                        continueButton.setOnAction(eeeee -> {
+                            getChildren().removeAll(continueButton,narration);
+                            sceneManager.createRhythmGameScreen();
+                            sceneManager.showRhythmGame();
+                            narration.setText("Woah! You surprised even yourself. Your performance drew heads, and, soon, a small pile of coins appears.");
+                        });
                     });
-                });
-                leavePiano.setOnAction(eeee -> {
-                    getChildren().removeAll(playPiano,narration,leavePiano);
-                    narration.setText("You left. You spend the rest of your life on the streets, fighting with rats for rotten scraps.");
-                    getChildren().add(narration);
+                    leavePiano.setOnAction(eeeee     -> {
+                        getChildren().removeAll(playPiano,narration,leavePiano);
+                        narration.setText("You left. You spend the rest of your life on the streets, fighting with rats for rotten scraps.");
+                        getChildren().add(narration);
+                    });
                 });
             });
             
