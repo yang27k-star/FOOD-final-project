@@ -43,6 +43,7 @@ public class Main extends Application {
 
         // Give the Scene to the manager so it can swap roots later
         sceneManager.setScene(scene);
+        primaryStage.setTitle("Peer and Penniless Piano Pursuit");
 
         primaryStage.setScene(scene);
         primaryStage.show();

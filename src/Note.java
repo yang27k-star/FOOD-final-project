@@ -16,7 +16,7 @@ public class Note {
     private Rectangle r;
     private KeyFrame keyFrame;
     private static int duration = 20;
-    private static int threshhold = 20;
+    private static int threshhold = 25;
     
     private boolean isHoldNote;
     private boolean isHolding = false;
@@ -69,13 +69,16 @@ public class Note {
     }
 
     public boolean handlePress(javafx.scene.input.KeyCode code) {
-        isHolding = false;
-        wasHolding = false;
-        pressedYPosition = r.getY() + r.getTranslateY() + holdNoteHeight;
+        if(code == javafx.scene.input.KeyCode.H){
+            wasHolding = false;
+            pressedYPosition = r.getY() + r.getTranslateY() + holdNoteHeight;
+        }
+        
         //Start of hold note press
         if (Math.abs(r.getX() - getLane(code)) < 50 &&
             Math.abs(pressedYPosition - 375) < 60)
         {
+            System.out.println("Note held");
             r.setFill(Color.DARKGRAY);
             isHolding = true;
             wasHolding = true;
@@ -102,21 +105,22 @@ public class Note {
         }
     }
     public boolean handleRelease() {
-        if(wasHolding){
-            wasHolding = false;
+
+       if(wasHolding)
+           wasHolding = false;
         double moved = r.getY() + r.getTranslateY() + holdNoteHeight - pressedYPosition;
         System.out.println(moved);
 
-        if (Math.abs(moved - holdNoteHeight) < threshhold) {
+        if (Math.abs(moved - holdNoteHeight) < threshhold && isHolding) {
+        System.out.println("Disappear");
         r.setVisible(false);
         
-        // Reset to prevent infinite "Hold success"
+        // Reset to prevent multiple Hold sucesses
         wasHolding = false;
 
         return true;
         }
         
-    }
     return false;
     }
     
