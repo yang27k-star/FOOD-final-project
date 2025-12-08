@@ -21,9 +21,8 @@ public class DialogueScreen extends VBox {
         startButton.setOnAction(e -> {
             getChildren().remove(startButton);
             narration.setText("Oh... That was a dream. You find yourself in your same old bed, the same, smelly clothes, and the same 12-cent-per-day closet you sleep in.");
-            getChildren().add(narration);
             Button continueButton = new Button("Continue");
-            getChildren().add(continueButton);
+            getChildren().addAll(narration,continueButton);
             continueButton.setOnAction(ee -> {
                 getChildren().removeAll(continueButton,narration);
                 narration.setText("Searching for your usual donation at the mall entrance, you suddenly notice a decrepit upright piano hidden conspicuously near you. Suddenly, memories of your past appear: your grandmother used to sit you on her lap and have you play 'Hot Cross Buns'");
