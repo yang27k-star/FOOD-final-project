@@ -37,7 +37,7 @@ public class DialogueScreen extends VBox {
                     getChildren().addAll(leavePiano,playPiano);
                     playPiano.setOnAction(eeee -> {
                         //getChildren().remove(narration);
-                        narration.setText("What is this feeling... You feel... INSPIRED");
+                        narration.setText("What is this feeling... You feel... INSPIRED \n Press ASDF to play the notes, H to hold the long ones");
                         //getChildren().add(narration);
                         getChildren().removeAll(playPiano,leavePiano);
                         getChildren().add(continueButton);

@@ -16,13 +16,12 @@ public class Note {
     private Rectangle r;
     private KeyFrame keyFrame;
     private static int duration = 20;
-    private static int threshhold = 25;
+    private static int threshhold = 50;
     
     private boolean isHoldNote;
     private boolean isHolding = false;
     private boolean wasHolding = false;
-    private int holdNoteHeight = 200;
-    private double requiredDistance = 200;
+    private int holdNoteHeight;
     private double pressedYPosition = 0;
     
     
@@ -31,6 +30,7 @@ public class Note {
         this.yPos = yPos;   
         this.isHoldNote = isHold;
         if(isHold){
+            this.holdNoteHeight = (int)(Math.random() * 200 + 100);
             this.r = new Rectangle(20, holdNoteHeight, Color.BLACK);
         } else {
             this.r = new Rectangle(20, 50, Color.color(Math.random(), Math.random(), Math.random()));
@@ -54,8 +54,16 @@ public class Note {
     public boolean wasHolding() {
         return wasHolding;
     }
+
+    public boolean isHolding() {
+        return isHolding;
+    }
     public KeyFrame getKeyFrame() {
         return keyFrame;
+    }
+
+    public int getHeight() {
+        return holdNoteHeight;
     }
 
     public boolean handleTap (int keyIndex) {
