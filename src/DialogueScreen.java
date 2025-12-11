@@ -7,6 +7,7 @@ import javafx.scene.text.Text;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
+import javafx.scene.control.TextField;
 //import src.SceneManager; 
 
 public class DialogueScreen extends VBox {
@@ -22,6 +23,8 @@ public class DialogueScreen extends VBox {
         Button continueButton = new Button("Continue");
         Button badChoice = new Button("Yes");
         Button restart = new Button("Restart");
+        TextField nameField = new TextField();
+        Button submit = new Button("Submit");
     
         if(sceneManager.getRhythmGamesPlayed() == 0) {
             getChildren().addAll(narration,startButton);
@@ -95,8 +98,25 @@ public class DialogueScreen extends VBox {
                     });
                 });
                 badChoice.setOnAction(eee-> {
+
+
+
+
+                    //add part where mone changes
+
+
+
                     getChildren().remove(badChoice);
-                    narration.setText("You picked up $2.89\n\n \"HEY!!! What are you DOING?!?\"");
+                    narration.setText("You picked up $2.89\n\n \"HEY!!! What are you DOIN'?!?\" \nYou turn your head.");
+                    continueButton.setText("Continue");
+                    continueButton.setOnAction(eeee-> {
+                        narration.setText("You see a very, VERY angry sheriff walking towards you.\n\"Don't you know beggin' is illegal 'round these here parts? \nWhat's your name?!?\"");
+                        getChildren().addAll(nameField,submit);
+                        submit.setOnAction(ee-> {
+                            String nameHolder = nameField.getText();
+                            name = nameHolder;
+                        });
+                    });
                     getChildren().add(restart);
                 });
             });
