@@ -15,8 +15,8 @@ public class Note {
     private int yPos;
     private Rectangle r;
     private KeyFrame keyFrame;
-    private static int duration = 20;
-    private static int threshhold = 50;
+    private static int gameDuration = 20;
+    private static int threshhold = 20;
     
     private boolean isHoldNote;
     private boolean isHolding = false;
@@ -38,13 +38,17 @@ public class Note {
         
         r.setX(xPos);
         r.setY(yPos);
-        KeyValue keyValue = new KeyValue(r.translateYProperty(), duration * 300);
-        KeyValue holdKeyValue = new KeyValue(r.translateYProperty(), duration * 300);
-        keyFrame = new KeyFrame(Duration.seconds(duration), keyValue);
+        KeyValue keyValue = new KeyValue(r.translateYProperty(), gameDuration * 300);
+        KeyValue holdKeyValue = new KeyValue(r.translateYProperty(), gameDuration * 300);
+        keyFrame = new KeyFrame(Duration.seconds(gameDuration), keyValue);
     }
 
     public Rectangle getRectangle() {
         return r;
+    }
+
+    public static int getThreshold() {
+        return threshhold;
     }
 
     public boolean isHoldNote() {
