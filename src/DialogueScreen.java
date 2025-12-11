@@ -326,7 +326,11 @@ public class DialogueScreen extends VBox {
                 });
             });
         } else if(sceneManager.getRhythmGamesPlayed() == 2) {
+<<<<<<< HEAD
             if
+=======
+            
+>>>>>>> cd8836bc4005c32b3bd6d00ae6d974288f2af3ec
         }
     }
 }
