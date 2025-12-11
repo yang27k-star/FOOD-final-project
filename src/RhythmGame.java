@@ -85,7 +85,7 @@ public class RhythmGame extends Pane {
         }
 
         for(int i = 0; i < numberOfHoldNotes; i++){
-            holdNotes.add(new Note(450, -200 - 600 * (int)(numberOfHoldNotes * Math.random()), true));
+            holdNotes.add(new Note(450, -600 - 600 * (int)(numberOfHoldNotes * Math.random()), true));
             
         }
         
@@ -112,6 +112,7 @@ public class RhythmGame extends Pane {
             getChildren().add(note.getRectangle());
         }
         for(Note note: holdNotes){
+            System.out.println("Hold note height: " + note.getHeight());
             getChildren().add(note.getRectangle());
         }
         
@@ -148,14 +149,18 @@ public class RhythmGame extends Pane {
 
         //only handles releases for hold notes 
         if(event.getCode().toString().equals("H")){
+        int holdNoteHeight = 0;
         boolean atLeastOne = false;
         for(Note holdNote : holdNotes){
             atLeastOne |= holdNote.handleRelease();
+            if(holdNote.isHolding()){
+                holdNoteHeight = holdNote.getHeight(); //Get the height of the note currently held
+            }
         }
 
         if (atLeastOne == true) {
             showResponse(response, "Hold success!", Color.GOLD);
-            updateScore(score, 100);  // bonus points for hold
+            updateScore(score, holdNoteHeight);  // bonus points for hold
         } else {
             showResponse(response, "Hold miss!", Color.RED);
             updateScore(score, -30);
