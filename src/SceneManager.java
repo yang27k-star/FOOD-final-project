@@ -8,6 +8,15 @@ public class SceneManager {
 
     private Scene scene;
     int rhythmGamesPlayed = 0;
+    String name = "um, this is not supposed to be here";
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String newName) {
+        name = newName;
+    }
 
     // Called once after the Scene is created
     public void setScene(Scene scene) {

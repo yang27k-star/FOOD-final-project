@@ -9,6 +9,7 @@ import javafx.scene.text.Text;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
+import javafx.scene.control.TextField;
 //import src.SceneManager; 
 
 public class DialogueScreen extends VBox {
@@ -24,6 +25,8 @@ public class DialogueScreen extends VBox {
         Button continueButton = new Button("Continue");
         Button badChoice = new Button("Yes");
         Button restart = new Button("Restart");
+        TextField nameField = new TextField();
+        Button submit = new Button("Submit");
     
         if(sceneManager.getRhythmGamesPlayed() == 0) {
             getChildren().addAll(narration,startButton);
@@ -98,9 +101,16 @@ public class DialogueScreen extends VBox {
                     });
                 });
                 badChoice.setOnAction(eee-> {
+
+
+
+
+                    //add part where mone changes
+
+
+
                     getChildren().remove(badChoice);
-                    int score = RhythmGame.getScore();
-                    narration.setText("You picked up $" + score/100 + "." + score%100 + "\n\n \"HEY!!! What are you DOING?!?\"");
+                    narration.setText("You picked up $2.89\n\n \"HEY!!! What are you DOING?!?\"");
                     getChildren().add(restart);
                 });
             });
