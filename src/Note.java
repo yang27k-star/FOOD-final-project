@@ -16,7 +16,7 @@ public class Note {
     private Rectangle r;
     private KeyFrame keyFrame;
     private static int duration = 20;
-    private static int threshhold = 50;
+    private static int threshold = 30;
     
     private boolean isHoldNote;
     private boolean isHolding = false;
@@ -47,6 +47,9 @@ public class Note {
         return r;
     }
 
+    public static int getThreshold() {
+        return threshold;
+    }
     public boolean isHoldNote() {
         return isHoldNote;
     }
@@ -68,7 +71,7 @@ public class Note {
 
     public boolean handleTap (int keyIndex) {
         if(!isHoldNote){
-            if(Math.abs(r.getX() - keyIndex) < 50 && Math.abs(r.getY() + r.getTranslateY() - 375) < 50){
+            if(Math.abs(r.getX() - keyIndex) < 50 && Math.abs(r.getY() + r.getTranslateY() - 400) < threshold){
             this.r.setVisible(false);
             return true;
         }
@@ -84,7 +87,7 @@ public class Note {
         
         //Start of hold note press
         if (Math.abs(r.getX() - getLane(code)) < 50 &&
-            Math.abs(pressedYPosition - 375) < 60)
+            Math.abs(pressedYPosition - 400) < threshold)
         {
             System.out.println("Note held");
             r.setFill(Color.DARKGRAY);
@@ -119,7 +122,7 @@ public class Note {
         double moved = r.getY() + r.getTranslateY() + holdNoteHeight - pressedYPosition;
         System.out.println(moved);
 
-        if (Math.abs(moved - holdNoteHeight) < threshhold && isHolding) {
+        if (Math.abs(moved - holdNoteHeight) < threshold && isHolding) {
         System.out.println("Disappear");
         r.setVisible(false);
         

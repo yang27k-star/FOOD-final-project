@@ -1,4 +1,3 @@
-//package view;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -21,27 +20,40 @@ import javafx.scene.text.Text;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
+import java.util.TimerTask;
+import java.util.Timer;
+//import java.lang.Thread;
 //import SceneManager; 
 
-public class MenuScreen extends VBox {
+public class EndScreen extends VBox {
+
+    
     //int rhythmGamesPlayed = 0;
 
-    public MenuScreen(SceneManager sceneManager) {
+    public EndScreen(SceneManager sceneManager) {
+
         setSpacing(10);
-        
         setAlignment(Pos.CENTER);
         
-        Button startGameButton = new Button("Start Perfected Peerless Penniless Piano Pursuit");
+        Button restartGame = new Button("Restart Game");
         Button exitbutton = new Button("Exit");
-        Label journey = new Label("Remember, only by following the uncommon path may you find companions to lead your journey starward...");
+        Label endingShower = new Label("The End");
+        if(sceneManager.getBoothillFavorability() == 1) {
+            endingShower.setText("Galaxy \nRanger \nEnding");
+        } else if(sceneManager.getBladeFavorability() == -1){
+            endingShower.setText("Script-ed Ending");
+        } else if(sceneManager.getBladeFavorability() == 1) {
+            endingShower.setText("Stellaron Hunter Ending");
+        }
         
-        startGameButton.setFont(new Font("Arial", 18));
-        journey.setFont(new Font("Arial", 8));
+        
+        restartGame.setFont(new Font("Arial", 18));
         exitbutton.setFont(new Font("Arial", 18));
-        getChildren().addAll(startGameButton,exitbutton,journey);
-        startGameButton.setOnAction(e-> {
-            sceneManager.createDialogueScreen();
-            sceneManager.showDialogueScreen();
+        endingShower.setFont(new Font("Arial", 130));
+       
+        getChildren().addAll(endingShower,restartGame,exitbutton);
+        restartGame.setOnAction(e-> {
+            sceneManager.showMenuScreen();
         });
         exitbutton.setOnAction(ee-> System.exit(0));
     }

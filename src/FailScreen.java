@@ -1,4 +1,3 @@
-//package view;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -21,28 +20,37 @@ import javafx.scene.text.Text;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
+import java.util.TimerTask;
+import java.util.Timer;
+//import java.lang.Thread;
 //import SceneManager; 
 
-public class MenuScreen extends VBox {
+public class FailScreen extends VBox {
+
+    
     //int rhythmGamesPlayed = 0;
 
-    public MenuScreen(SceneManager sceneManager) {
+    public FailScreen(SceneManager sceneManager) {
+
         setSpacing(10);
-        
         setAlignment(Pos.CENTER);
         
-        Button startGameButton = new Button("Start Perfected Peerless Penniless Piano Pursuit");
+        Button restartLevel = new Button("Restart Level");
         Button exitbutton = new Button("Exit");
-        Label journey = new Label("Remember, only by following the uncommon path may you find companions to lead your journey starward...");
+        Label justKidding = new Label("Just kidding! \nYou failed the level");
         
-        startGameButton.setFont(new Font("Arial", 18));
-        journey.setFont(new Font("Arial", 8));
+        
+        restartLevel.setFont(new Font("Arial", 18));
         exitbutton.setFont(new Font("Arial", 18));
-        getChildren().addAll(startGameButton,exitbutton,journey);
-        startGameButton.setOnAction(e-> {
-            sceneManager.createDialogueScreen();
-            sceneManager.showDialogueScreen();
+        justKidding.setFont(new Font("Arial", 18));
+       
+        getChildren().addAll(justKidding,restartLevel,exitbutton);
+        restartLevel.setOnAction(e-> {
+            sceneManager.restartLevel();
+            sceneManager.showRhythmGame();
         });
         exitbutton.setOnAction(ee-> System.exit(0));
+    
+        
     }
 }

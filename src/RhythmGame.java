@@ -27,13 +27,14 @@ import java.util.TimerTask;
 
 public class RhythmGame extends Pane {
     
-    private static int numberOfNotes = 100;
-    private static int numberOfHoldNotes = 5;
-    private static ArrayList<Note> notes = new ArrayList<>();
-    private static ArrayList<Note> holdNotes = new ArrayList<>();
-    private static Set<KeyCode> keysHeld = new HashSet<>();
+    private int numberOfNotes = 100;
+    private int numberOfHoldNotes = 5;
+    private ArrayList<Note> notes = new ArrayList<>();
+    private ArrayList<Note> holdNotes = new ArrayList<>();
+    private Set<KeyCode> keysHeld = new HashSet<>();
     private int misses = 0;
-    private static KeyFrame[] keyFrames = new KeyFrame[numberOfNotes + numberOfHoldNotes];
+    private static Label score = new Label(String.valueOf(0));
+    private KeyFrame[] keyFrames = new KeyFrame[numberOfNotes + numberOfHoldNotes];
 
 
 
@@ -42,7 +43,9 @@ public class RhythmGame extends Pane {
         score.setText(String.valueOf(currentScore + x));
     }
 
-
+    public static int getScore(){
+        return Integer.parseInt(score.getText());
+    }
     private void showResponse(Label label, String text, Color color) {
         label.setText(text);
         label.setTextFill(color);
@@ -54,9 +57,14 @@ public class RhythmGame extends Pane {
 
     public RhythmGame(SceneManager sceneManager) {
         setBackground(new javafx.scene.layout.Background(new javafx.scene.layout.BackgroundFill(Color.LIGHTYELLOW, null, null)));
+        
         class taskSetter extends TimerTask {
         public void run() {
-            sceneManager.showDialogueScreen();
+            if(RhythmGame.getScore() < sceneManager.getRhythmGamesPlayed() * 200 + 600) {
+                sceneManager.showYouDeerScreen();
+            } else {
+                sceneManager.showDialogueScreen();
+            }
         }
     }
         
@@ -77,7 +85,7 @@ public class RhythmGame extends Pane {
         scoreAdd.setLayoutY(70);
         getChildren().add(scoreAdd);
         
-        Label score = new Label(String.valueOf(0));
+        
         score.setFont(new Font(24));
         score.setLayoutX(400);
         score.setLayoutY(50);
@@ -111,7 +119,7 @@ public class RhythmGame extends Pane {
        
         //List of rectangles representing the lanes/keys
         for(int i = 0; i < 5; i++){
-            Rectangle r = new Rectangle(35 + i * 100, 400, 50, 10);
+            Rectangle r = new Rectangle(35 + i * 100, 400, 50, 2 * Note.getThreshold());
 
             r.setStroke(Color.TRANSPARENT);
             r.setFill(Color.GREENYELLOW);
