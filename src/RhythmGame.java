@@ -26,8 +26,9 @@ import java.util.TimerTask;
 
 
 public class RhythmGame extends Pane {
+    
     private static int numberOfNotes = 100;
-    private static int numberOfHoldNotes = 10;
+    private static int numberOfHoldNotes = 5;
     private static ArrayList<Note> notes = new ArrayList<>();
     private static ArrayList<Note> holdNotes = new ArrayList<>();
     private static Set<KeyCode> keysHeld = new HashSet<>();
@@ -41,6 +42,7 @@ public class RhythmGame extends Pane {
         score.setText(String.valueOf(currentScore + x));
     }
 
+
     private void showResponse(Label label, String text, Color color) {
         label.setText(text);
         label.setTextFill(color);
@@ -51,13 +53,12 @@ public class RhythmGame extends Pane {
     }
 
     public RhythmGame(SceneManager sceneManager) {
-        
+        setBackground(new javafx.scene.layout.Background(new javafx.scene.layout.BackgroundFill(Color.LIGHTYELLOW, null, null)));
         class taskSetter extends TimerTask {
         public void run() {
             sceneManager.showDialogueScreen();
         }
     }
-        
         
         System.out.println("Starting");
         //Setting up stage
@@ -69,6 +70,12 @@ public class RhythmGame extends Pane {
         response.setLayoutX(180);
         response.setLayoutY(20);
         getChildren().add(response);
+
+        Label scoreAdd = new Label("");
+        scoreAdd.setFont(new Font(24));
+        scoreAdd.setLayoutX(180);
+        scoreAdd.setLayoutY(70);
+        getChildren().add(scoreAdd);
         
         Label score = new Label(String.valueOf(0));
         score.setFont(new Font(24));
@@ -76,6 +83,9 @@ public class RhythmGame extends Pane {
         score.setLayoutY(50);
         score.setTextFill(Color.PURPLE);
         getChildren().add(score);
+
+        
+
         
         //Randomly generating notes and storing them in the notes arraylist
 
@@ -85,10 +95,11 @@ public class RhythmGame extends Pane {
         }
 
         for(int i = 0; i < numberOfHoldNotes; i++){
-            holdNotes.add(new Note(450, -600 - 600 * (int)(numberOfHoldNotes * Math.random()), true));
-            
+            int offset = (int)(100 * Math.random());
+            holdNotes.add(new Note(450, -600 - i * 6000 / numberOfHoldNotes- offset, true)); //Hold notes are spaced out
         }
-        
+
+        System.out.println(holdNotes.size());
         for(int i = 0; i < numberOfNotes; i++){
             keyFrames[i] = notes.get(i).getKeyFrame();
         }
@@ -134,10 +145,12 @@ public class RhythmGame extends Pane {
 
             if (tapHit) {
                 showResponse(response, "Hit!", Color.LIMEGREEN);
+                showResponse(scoreAdd, "+30", Color.LIMEGREEN);
                 updateScore(score, 30);
             } else {
                 if(!event.getCode().toString().equals("H")){ //space is for hold notes only
                 showResponse(response, "Miss!", Color.RED);
+                showResponse(scoreAdd, "-10", Color.RED);
                 updateScore(score, -10);
                 misses++;
                 }
@@ -160,9 +173,11 @@ public class RhythmGame extends Pane {
 
         if (atLeastOne == true) {
             showResponse(response, "Hold success!", Color.GOLD);
+            showResponse(scoreAdd, "+" + holdNoteHeight , Color.GOLD);
             updateScore(score, holdNoteHeight);  // bonus points for hold
         } else {
             showResponse(response, "Hold miss!", Color.RED);
+            showResponse(scoreAdd, "-30", Color.RED);
             updateScore(score, -30);
             misses++;
         }

@@ -41,5 +41,6 @@ public class MenuScreen extends VBox {
             sceneManager.createDialogueScreen();
             sceneManager.showDialogueScreen();
         });
+        exitbutton.setOnAction(ee-> System.exit(0));
     }
 }

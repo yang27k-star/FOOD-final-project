@@ -47,7 +47,7 @@ public class DialogueScreen extends VBox {
                             continueButton.setOnAction(eeeee -> {
                                 getChildren().removeAll(continueButton,narration);
                                 //rhythmGamesPlayed++;
-                                sceneManager.createRhythmGameScreen();
+                                //sceneManager.createRhythmGameScreen();
                                 sceneManager.showRhythmGame();
                             });
                         });
@@ -96,7 +96,7 @@ public class DialogueScreen extends VBox {
                 });
                 badChoice.setOnAction(eee-> {
                     getChildren().remove(badChoice);
-                    narration.setText("You picked up $2.89\n\n \"\"");
+                    narration.setText("You picked up $2.89\n\n \"HEY!!! What are you DOING?!?\"");
                     getChildren().add(restart);
                 });
             });
