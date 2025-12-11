@@ -3,6 +3,8 @@
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -26,7 +28,6 @@ public class DialogueScreen extends VBox {
         TextField nameField = new TextField();
         Button submit = new Button("Submit");
         Button impressiveChoice = new Button("Impressive");
-        Label scoreDisplay = new Label();
     
         if(sceneManager.getRhythmGamesPlayed() == 0) {
             getChildren().addAll(narration,startButton);
@@ -45,8 +46,9 @@ public class DialogueScreen extends VBox {
                         getChildren().addAll(leavePiano,playPiano);
                         playPiano.setOnAction(eeee -> {
                             //getChildren().remove(narration);
-                            narration.setText("What is this feeling... You feel... INSPIRED \n Press ASDF to play the notes, H to hold the long ones");
+                            narration.setText("What is this feeling... You feel... INSPIRED \nTap ASDF to play the notes, press H to hold the long ones");
                             //getChildren().add(narration);
+
                             getChildren().removeAll(playPiano,leavePiano);
                             getChildren().add(continueButton);
                             continueButton.setOnAction(eeeee -> {
@@ -75,11 +77,10 @@ public class DialogueScreen extends VBox {
 
             //Button exitButton = new Button("Exit");
         } else if(sceneManager.getRhythmGamesPlayed() == 1) {
-            scoreDisplay.setText("Score: " + Integer.toString(RhythmGame.getScore()));
-            narration.setText("Woah! You surprised even yourself. Your performance drew heads, and, \nsoon, a small pile of coins appears.");
-            getChildren().addAll(scoreDisplay,narration,continueButton);
+            narration.setText("Score: " + RhythmGame.getScore() + "\n\nWoah! You surprised even yourself. Your performance drew heads, and, \nsoon, a small stash of money appears.");
+            getChildren().addAll(narration,continueButton);
             continueButton.setOnAction(e -> {
-                narration.setText("Pick up the coins?");
+                narration.setText("Pick up the bills and coins?");
                 continueButton.setText("No");
                 getChildren().add(badChoice);
                 continueButton.setOnAction(ee -> {

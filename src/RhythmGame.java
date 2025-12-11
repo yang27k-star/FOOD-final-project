@@ -33,9 +33,8 @@ public class RhythmGame extends Pane {
     private ArrayList<Note> holdNotes = new ArrayList<>();
     private Set<KeyCode> keysHeld = new HashSet<>();
     private int misses = 0;
+    private static KeyFrame[] keyFrames = new KeyFrame[numberOfNotes + numberOfHoldNotes];
     private static Label score = new Label(String.valueOf(0));
-    private KeyFrame[] keyFrames = new KeyFrame[numberOfNotes + numberOfHoldNotes];
-
 
 
     private void updateScore(Label score, int x){
@@ -103,7 +102,7 @@ public class RhythmGame extends Pane {
         }
 
         for(int i = 0; i < numberOfHoldNotes; i++){
-            int offset = (int)(100 * Math.random());
+            int offset = (int)(200 * Math.random());
             holdNotes.add(new Note(450, -600 - i * 6000 / numberOfHoldNotes- offset, true)); //Hold notes are spaced out
         }
 
@@ -119,7 +118,7 @@ public class RhythmGame extends Pane {
        
         //List of rectangles representing the lanes/keys
         for(int i = 0; i < 5; i++){
-            Rectangle r = new Rectangle(35 + i * 100, 400, 50, 2 * Note.getThreshold());
+            Rectangle r = new Rectangle(35 + i * 100, 375, 50, 2 * Note.getThreshold());
 
             r.setStroke(Color.TRANSPARENT);
             r.setFill(Color.GREENYELLOW);
@@ -127,6 +126,9 @@ public class RhythmGame extends Pane {
             getChildren().addAll(r);
         }
         
+        
+
+
         for(Note note: notes){
             getChildren().add(note.getRectangle());
         }
