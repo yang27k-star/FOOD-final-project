@@ -34,7 +34,7 @@ public class Main extends Application {
 
         // Start on the main menu screen
         //var initialRoot = sceneManager.createGameScreen();
-        var initialRoot = sceneManager.createDialogueScreen();
+        var initialRoot = sceneManager.createMenuScreen();
 
         // Create one Scene and reuse it
         scene = new Scene(initialRoot, 800, 600);

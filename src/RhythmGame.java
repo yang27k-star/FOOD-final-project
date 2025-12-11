@@ -20,6 +20,10 @@ import java.security.Key;
 import java.util.ArrayList;
 import javafx.scene.text.Font;
 import javafx.application.Platform;
+import java.util.Timer;
+import java.util.TimerTask;
+
+
 
 public class RhythmGame extends Pane {
     private static int numberOfNotes = 100;
@@ -47,6 +51,12 @@ public class RhythmGame extends Pane {
     }
 
     public RhythmGame(SceneManager sceneManager) {
+        
+        class taskSetter extends TimerTask {
+        public void run() {
+            sceneManager.showDialogueScreen();
+        }
+    }
         
         
         System.out.println("Starting");
@@ -161,5 +171,10 @@ public class RhythmGame extends Pane {
         setFocusTraversable(true);
         // requestFocus();
         Platform.runLater(() -> requestFocus() );
+        Timer timer = new Timer();
+        TimerTask task = new taskSetter();
+        
+        timer.schedule(task, 20000);
+
     }
 }

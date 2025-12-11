@@ -1,10 +1,13 @@
 //import view;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+// import java.util.Timer;
+// import java.util.TimerTask;
 
 public class SceneManager {
 
     private Scene scene;
+    int rhythmGamesPlayed = 0;
 
     // Called once after the Scene is created
     public void setScene(Scene scene) {
@@ -13,8 +16,8 @@ public class SceneManager {
 
     // create new screens
 
-    public Parent createGameScreen() {
-        return new GameScreen(this);
+    public Parent createMenuScreen() {
+        return new MenuScreen(this);
     }
 
     public Parent createRhythmGameScreen() {
@@ -22,7 +25,12 @@ public class SceneManager {
     }
 
     public void showRhythmGame() {
+        rhythmGamesPlayed++;
         scene.setRoot(createRhythmGameScreen());
+    }
+
+    public int getRhythmGamesPlayed() {
+        return rhythmGamesPlayed;
     }
 
     public Parent createDialogueScreen() {
@@ -35,7 +43,8 @@ public class SceneManager {
 
     // navigation methods
 
-    public void showGameScreen() {
-        scene.setRoot(createGameScreen());
+    public void showMenuScreen() {
+        rhythmGamesPlayed = 0;
+        scene.setRoot(createMenuScreen());
     }
 }
