@@ -27,8 +27,8 @@ import java.util.TimerTask;
 
 public class RhythmGame extends Pane {
     
-    private int numberOfNotes = 100;
-    private int numberOfHoldNotes = 5;
+    private static int numberOfNotes = 100;
+    private static int numberOfHoldNotes = 5;
     private ArrayList<Note> notes = new ArrayList<>();
     private ArrayList<Note> holdNotes = new ArrayList<>();
     private Set<KeyCode> keysHeld = new HashSet<>();

@@ -16,7 +16,7 @@ public class Note {
     private Rectangle r;
     private KeyFrame keyFrame;
     private static int gameDuration = 20;
-    private static int threshhold = 20;
+    private static int threshold = 40;
     
     private boolean isHoldNote;
     private boolean isHolding = false;
@@ -48,7 +48,7 @@ public class Note {
     }
 
     public static int getThreshold() {
-        return threshhold;
+        return threshold;
     }
 
     public boolean isHoldNote() {
