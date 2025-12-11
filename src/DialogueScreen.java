@@ -326,7 +326,7 @@ public class DialogueScreen extends VBox {
                 });
             });
         } else if(sceneManager.getRhythmGamesPlayed() == 2) {
-
+            
         }
     }
 }
